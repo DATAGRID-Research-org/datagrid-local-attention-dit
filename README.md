@@ -1,3 +1,5 @@
+![スクリーンショット 2025-05-17 22 06 25](https://github.com/user-attachments/assets/d5e49e71-163a-4280-8f26-6fe424e9592d)
+
 # LocalDiT
 LocalDiT is a lightweight Diffusion Transformer model for high-quality text-to-image generation that incorporates local attention mechanisms to improve computational efficiency while maintaining generation quality.
 
