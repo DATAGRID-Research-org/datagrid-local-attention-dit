@@ -1,12 +1,22 @@
 from PIL import Image
-from localdit.pipeline_i2i import LocalDiTImg2ImgPipeline
 
-init_image:Image = ...
-i2i_pipe = LocalDiTImg2ImgPipeline.from_pretrained("path/to/LocalDiT-model.pt")
-i2i_pipe = i2i_pipe.to("cuda")
-image = i2i_pipe(
-    prompt="A snowy mountain landscape with aurora borealis",
-    image=init_image,
-    strength=0.7,
-    num_inference_steps=30
-).images[0]
+from localdit.inference import inference
+from localdit.utils import load_model
+from config import Config
+
+image = Image.open("output/generated_image_0.png").convert("RGB")
+
+config = Config()
+
+pipe = load_model(config)
+    
+# Example prompts
+prompts = ["A photo of beautiful mountain with realistic sunset and blue lake, highly detailed, masterpiece"] * config.batch_size
+neg_prompts = ["bad quality, worst quality, low resolution, blurry, pixelated, text, frame, cartoon"] * config.batch_size
+
+# Generate images
+images = inference(pipe, prompts, neg_prompts, config, image=image)
+
+# Save images
+for i, img in enumerate(images):
+    img.save(f"output/generated_image_{i}.png")

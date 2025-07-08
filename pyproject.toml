@@ -1,11 +1,18 @@
 [project]
-name = "datagrid-local-attention-dit"
+name = "localdit"
 version = "0.1.0"
-description = "Add your description here"
+description = "Local Attention DiT - Efficient Diffusion Transformer with Window-based Local Attention"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.8"
 dependencies = [
-    "accelerate>=1.7.0",
-    "diffusers>=0.33.1",
-    "transformers>=4.51.3",
+    "torch>=2.0.0",
+    "accelerate>=0.20.0",
+    "diffusers>=0.25.0",
+    "einops>=0.6.0",
+    "safetensors>=0.4.0",
+    "sentencepiece>=0.1.99",
+    "transformers>=4.30.0",
+    "tqdm>=4.65.0",
+    "pillow>=9.5.0",
+    "numpy>=1.24.0",
 ]

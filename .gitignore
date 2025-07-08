@@ -173,3 +173,28 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+CLAUDE.md
+.claude
+
+# Model weights and outputs
+*.pt
+*.pth
+*.bin
+*.ckpt
+output/
+checkpoints/
+logs/
+wandb/
+
+# Keep the example safetensors file
+!output/LocalDiT-1024.safetensors
+
+# Generated images (but keep assets)
+*.png
+*.jpg
+*.jpeg
+!assets/*.png
+!assets/*.jpg
+
+# Reference file
+reference_code_for_inference.py

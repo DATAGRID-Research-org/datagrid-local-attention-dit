@@ -1,14 +1,18 @@
-from localdit.pipeline_t2i import LocalDiTTxt2ImgPipeline
+from localdit.inference import inference
+from localdit.utils import load_model
+from config import Config
 
-pipe = LocalDiTTxt2ImgPipeline.from_pretrained("path/to/LocalDiT-model.pt")
-pipe = pipe.to("cuda")
-prompt = "Nighttime alpine lodge with warm interior lights, Milky Way arch above"
-image = pipe(
-    prompt=prompt,
-    height=576,
-    width=1024,
-    target_height=1152,
-    target_width=2048,
-    num_inference_steps=20,
-    refinement_steps=20
-).images[0]
+config = Config()
+
+pipe = load_model(config)
+    
+# Example prompts
+prompts = ["A photo of beautiful mountain with realistic sunset and blue lake, highly detailed, masterpiece"] * config.batch_size
+neg_prompts = ["bad quality, worst quality, low resolution, blurry, pixelated, text, frame, cartoon"] * config.batch_size
+
+# Generate images
+images = inference(pipe, prompts, neg_prompts, config)
+
+# Save images
+for i, img in enumerate(images):
+    img.save(f"output/generated_image_{i}.png")

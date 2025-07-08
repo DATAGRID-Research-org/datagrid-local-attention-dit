@@ -263,7 +263,9 @@ class GCAttnProcessor2_0:
         
         return attn_mask
 
-    def set_image_size(self, height, width):
+    def set_image_size(self, height, width, verbose=False):
+        if verbose:
+            print("Setting image size", height, width)
         self.height = int(height)
         self.width = int(width)
 
@@ -322,7 +324,7 @@ class GCAttnProcessor2_0:
 
             if self.do_rope:
                 seq_len = q.shape[2]
-                assert seq_len == self.width * self.height, "invalid"
+                assert seq_len == self.width * self.height, f"invalid seq_len: {seq_len} != {self.width * self.height}"
                 if self.cos.shape[2] != seq_len or self.cos.shape[3] != dim_per_head//2:
                     self.create_position_encoding_2d(dim_per_head, q.device, q.dtype)
                 def apply_rotate(x):
