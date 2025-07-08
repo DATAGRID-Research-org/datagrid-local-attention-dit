@@ -31,24 +31,6 @@ LocalDiT builds upon the architecture of [PixArt-α](https://huggingface.co/PixA
 - PyTorch 2.0 or higher  
 - CUDA-capable GPU (recommended)
 
-### Quick Start
-
-```bash
-git clone https://github.com/yourusername/localdit.git
-cd localdit
-./quickstart.sh  # Automated setup script
-```
-
-### Manual Installation
-
-See [INSTALL.md](INSTALL.md) for detailed installation instructions.
-
-```bash
-git clone https://github.com/yourusername/localdit.git
-cd localdit
-pip install -e .
-```
-
 ### Dependencies
 
 The package will automatically install the following dependencies:
@@ -153,63 +135,6 @@ LocalDiT uses a transformer-based architecture with the following key components
    - Optional global context attention
 4. **Output Projection**: Converts embeddings back to image space
 
-### Configuration Options
-
-Key configuration parameters (in `config.py`):
-
-- `num_attention_heads`: Number of attention heads (default: 16)
-- `attention_head_dim`: Dimension of each attention head (default: 72)
-- `num_layers`: Number of transformer blocks (default: 18)
-- `window_size`: Size of local attention windows (default: 4)
-- `height/width`: Output image dimensions (default: 768×1024)
-- `denoising_steps`: Number of denoising steps (default: 20)
-- `guidance_scale`: Classifier-free guidance scale (default: 7.0)
-- `do_rope`: Enable rotary position embeddings (default: True)
-
-## Training
-
-### Quick Start Training
-
-```bash
-# Install training dependencies
-pip install -r requirements-train.txt
-
-# Single GPU training
-python train.py \
-  --data-root /path/to/your/dataset \
-  --image-size 512 \
-  --batch-size 4 \
-  --use-wandb
-
-# Multi-GPU training with accelerate
-accelerate launch train.py \
-  --data-root /path/to/your/dataset \
-  --image-size 512 \
-  --batch-size 2
-```
-
-### Training Details
-
-- **Training Data**: Approximately 40M image-text pairs
-- **Training Strategy**: Multi-stage resolution training (256px → 512px → 1024px)
-- **Architecture Modifications**:
-  - Implemented window-based local attention with global context
-  - Added shift mechanism for cross-window information flow
-  - Reduced parameter count through efficient attention design (0.52B params)
-  - Optimized for both quality and computational efficiency
-
-For detailed training instructions, see [docs/TRAIN.md](docs/TRAIN.md).
-
-### Training Features
-
-- Mixed precision training (fp16/bf16) with accelerate
-- EMA (Exponential Moving Average) for stable generation
-- Distributed training across multiple GPUs
-- Gradient accumulation and checkpointing
-- WebDataset support for large-scale training
-- Weights & Biases integration for experiment tracking
-- Flexible data loading with multiple format support
-
 ## Model Checkpoints
 
 Model checkpoints can be in either SafeTensors format (`.safetensors`) or PyTorch format (`.pt`). The checkpoint contains the transformer state dict with:
@@ -219,17 +144,6 @@ Model checkpoints can be in either SafeTensors format (`.safetensors`) or PyTorc
 - Normalization parameters
 - Position encoding weights
 
-## Performance
-
-LocalDiT achieves comparable image quality to PixArt-α while offering:
-
-- **Parameters**: 20% reduction in model parameters (0.52B vs 0.6B)
-- **Speed**: Up to 30% faster inference speed
-- **Memory**: ~40% reduction for 1024×1024 images
-- **Quality**: Comparable generation quality to full attention models
-
-The efficiency gains come from the local attention mechanism which reduces the quadratic complexity of standard attention to linear with respect to image size.
-
 ## Limitations
 
 1. The model primarily works with English text prompts
@@ -237,27 +151,6 @@ The efficiency gains come from the local attention mechanism which reduces the q
 3. The model may inherit biases present in the training data
 4. Local attention windows may occasionally miss long-range dependencies
 
-## Citation
-
-If you use LocalDiT in your research, please cite:
-
-```bibtex
-@software{localdit2024,
-  title={LocalDiT: Local Attention Diffusion Transformer},
-  author={DataGrid Team},
-  year={2024},
-  url={https://github.com/yourusername/localdit}
-}
-```
-
 ## License
 
 This project is licensed under the Apache 2.0 License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- Based on the DiT (Diffusion Transformer) architecture and PixArt-α
-- Uses components from HuggingFace Diffusers library
-- Inspired by Swin Transformer's window attention mechanism
-- Text encoding powered by Google's FLAN-T5-XXL model
-- VAE from Stability AI's SDXL
